@@ -48,6 +48,11 @@ module Hooks
       super Uber::Options::Value.new(callback, :dynamic => true) # allows string and symbol method names.
     end
 
+    def include?(callback)
+      k = Uber::Options::Value.new(callback, :dynamic => true)
+      find { |x| k.instance_variables.find { |v| k.instance_variable_get(v) != x.instance_variable_get(v) }.nil? }
+    end
+
   private
     def execute_callback(scope, callback, *args)
       scope = @options[:scope].(callback, scope) if @options[:scope]

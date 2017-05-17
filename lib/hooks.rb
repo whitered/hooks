@@ -89,6 +89,7 @@ module Hooks
       # DISCUSS: isn't there a simpler way to define a dynamic method? should the internal logic be handled by HooksSet instead?
       str = <<-RUBY_EVAL
         def #{name}(method=nil, &block)
+          return if _hooks[:#{name}].include?(block || method)
           _hooks[:#{name}] << (block || method)
         end
       RUBY_EVAL
